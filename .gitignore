@@ -1,0 +1,105 @@
+# =====================================
+# 🚀 Django + Docker + Celery Project
+# =====================================
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.pdb
+*.egg-info/
+.eggs/
+*.log
+*.pot
+
+# --- Virtual Environment ---
+venv/
+env/
+ENV/
+.venv/
+env.bak/
+
+# --- Django Specific ---
+*.sqlite3
+db.sqlite3
+*.mo
+*.pot
+media/
+staticfiles/
+static/
+node_modules/
+.DS_Store
+
+# --- Migrations cache (optional) ---
+# Uncomment next line if you auto-generate migrations often
+# */migrations/*.py
+# !*/migrations/__init__.py
+
+# --- Celery ---
+celerybeat-schedule
+celerybeat.pid
+
+# --- Environment ---
+.env
+.env.local
+.env.dev
+.env.prod
+*.env
+
+# --- IDE & OS ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+Thumbs.db
+*.~lock.*
+
+# --- Logs ---
+*.log
+logs/
+*.pid
+*.seed
+
+# --- Docker ---
+docker-compose.override.yml
+docker-compose.override.yaml
+.docker/
+docker_build/
+.dockerignore
+
+# --- Redis & Postgres data ---
+data/
+postgres_data/
+redis_data/
+
+# --- Coverage / Testing ---
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+htmlcov/
+pytest_cache/
+
+# --- PyInstaller / Build ---
+build/
+dist/
+*.manifest
+*.spec
+
+# --- Temporary files ---
+*.tmp
+*.temp
+*.old
+*.orig
+
+# --- Swagger UI cache ---
+drf_yasg/
+*.bak
+
+# --- Other ---
+*.crt
+*.pem
+*.key

@@ -1,0 +1,62 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    env_file: .env
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app                     # 🔥 Loyihadagi kodni container bilan sinxron qiladi
+      - static_volume:/app/static  # 🔥 static fayllar saqlanadi
+
+  worker:
+    build: .
+    env_file: .env
+    command: celery -A coffee_shop_api worker -l info
+    depends_on:
+      - web
+      - redis
+      - db
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+
+  beat:
+    build: .
+    env_file: .env
+    command: celery -A coffee_shop_api beat -l info
+    depends_on:
+      - worker
+      - db
+      - redis
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-coffee_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # 🔥 Ma’lumotlar saqlanadi
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+
+# 🔸 Saqlanadigan volume’lar
+volumes:
+  postgres_data:   # PostgreSQL data saqlanadi
+  static_volume:   # Django static fayllar saqlanadi
