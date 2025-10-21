@@ -11,8 +11,9 @@ services:
       - db
       - redis
     volumes:
-      - .:/app                     # 🔥 Loyihadagi kodni container bilan sinxron qiladi
-      - static_volume:/app/static  # 🔥 static fayllar saqlanadi
+      - .:/app                     
+      - static_volume:/app/staticfiles
+      - ./users/migrations:/app/users/migrations 
 
   worker:
     build: .
@@ -24,7 +25,7 @@ services:
       - db
     volumes:
       - .:/app
-      - static_volume:/app/static
+      - static_volume:/app/staticfiles
 
   beat:
     build: .
@@ -36,7 +37,7 @@ services:
       - redis
     volumes:
       - .:/app
-      - static_volume:/app/static
+      - static_volume:/app/staticfiles
 
   db:
     image: postgres:16
