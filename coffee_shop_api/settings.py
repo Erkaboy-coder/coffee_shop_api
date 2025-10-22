@@ -114,6 +114,8 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
     ),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10, 
 }
 
 SWAGGER_SETTINGS = {
@@ -127,6 +129,15 @@ SWAGGER_SETTINGS = {
     },
     "USE_SESSION_AUTH": False,
     "SECURITY_REQUIREMENTS": [{"Bearer": []}],
+}
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://redis:6379/2", 
+        "TIMEOUT": 60 * 5,
+    }
 }
 
 

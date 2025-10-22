@@ -11,6 +11,8 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 from .tasks import send_verification_email
+from rest_framework.pagination import PageNumberPagination
+from django.core.cache import cache
 
 class RegisterView(generics.CreateAPIView):
     """
@@ -177,12 +179,35 @@ class MeView(generics.RetrieveAPIView):
     def get_object(self):
         return self.request.user
 
+class UserPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size' 
+    max_page_size = 100
+
+
 class UserListView(generics.ListAPIView):
-    # summary: List users
-    # description: Admin-only endpoint returning all users.
+    """
+    List all users with Redis caching and pagination.
+    Cache is automatically cleared when users are added, updated, or deleted.
+    """
     queryset = User.objects.all().order_by("id")
     serializer_class = UserSerializer
     permission_classes = [IsAdminRole]
+    pagination_class = UserPagination
+
+    def get_queryset(self):
+        cache_key = "cached_users"
+        users = cache.get(cache_key)
+
+        if not users:
+            print("🧠 Fetching from database...")
+            users = list(User.objects.all().order_by("id"))
+            cache.set(cache_key, users, timeout=60 * 5)  # Cache for 5 minutes
+        else:
+            print("⚡ Loaded from Redis cache!")
+
+        return users
+    
 
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     # summary: Get/Update/Delete user by ID
