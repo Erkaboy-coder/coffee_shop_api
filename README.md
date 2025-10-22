@@ -1,5 +1,3 @@
-Perfect 👍 Here’s a clean, professional, and fully-detailed **README.md** file for your **Coffee Shop API** Django + Docker + Celery + SMTP project — written in natural, developer-friendly **English** and formatted beautifully for GitHub presentation:
-
 ---
 
 # ☕ Coffee Shop API
