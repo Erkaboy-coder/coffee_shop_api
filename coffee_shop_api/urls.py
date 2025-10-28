@@ -22,22 +22,25 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
-# 🔹 Asosiy URL konfiguratsiya
+# 🔹 URL patterns
 urlpatterns = [
     path("admin/", admin.site.urls),
 
     # API moduli
     path("api/", include("users.urls")),
 
+    # ✅ Prometheus metrics endpoint
+    path("", include("django_prometheus.urls")),
+
     # Swagger UI
     path("swagger/", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
 
-    # Root sahifada ham Swagger chiqadi
+    # Root sahifada Swagger chiqadi
     path("", schema_view.with_ui("swagger", cache_timeout=0), name="root-swagger"),
 ]
 
-# 🔹 Static va media fayllar (faqat DEBUG=True bo‘lsa)
+# 🔹 Static & Media
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
